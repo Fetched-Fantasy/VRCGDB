@@ -1,0 +1,121 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #000d1a; /* Dark blue background */
+    color: #fff; /* Light text color */
+    margin: 0;
+    padding: 0;
+}
+
+/* Glowing effect */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(74, 85, 230, 0.2) 0%, rgba(0, 13, 26, 0.7) 70%); /* Glowing blue */
+    z-index: -1;
+}
+
+.header {
+    background-color: rgba(0, 21, 42, 0.8); /* Darker blue header */
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: rgba(0, 21, 42, 0.5); /* Semi-transparent container */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative; /* For search input positioning */
+}
+
+h1, h2 {
+    color: #66b3ff; /* Lighter blue for headings */
+    text-shadow: 0 0 5px #66b3ff; /* Glowing heading text */
+}
+
+#search-input {
+    float: right;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #66b3ff;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+#status {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+#group-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Uniform grid */
+    gap: 1.5rem;
+    max-height: 600px; /* Set a maximum height */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    padding-right: 1rem; /* Space for scrollbar */
+}
+
+/* Style the scrollbar */
+#group-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#group-list::-webkit-scrollbar-track {
+    background: #000d1a;
+}
+
+#group-list::-webkit-scrollbar-thumb {
+    background: #66b3ff;
+    border-radius: 4px;
+}
+
+#group-list::-webkit-scrollbar-thumb:hover {
+    background: #99cfff;
+}
+
+.group-card {
+    background: rgba(0, 34, 68, 0.7); /* Card background */
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #66b3ff;
+    transition: transform 0.3s ease;
+}
+
+.group-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(102, 179, 255, 0.5);
+}
+
+.group-card h3 {
+    margin-top: 0;
+    color: #66b3ff;
+}
+
+.group-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(102, 179, 255, 0.3);
+}
+
+.footer {
+    background-color: rgba(0, 21, 42, 0.8); /* Darker blue footer */
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
