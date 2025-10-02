@@ -13,7 +13,7 @@ const clientId = '1420077800680853716';
 const redirectUri = encodeURIComponent('https://ffny.netlify.app');
 const scope = 'identify';
 const responseType = 'code';
-const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+const discordAuthUrl = `https://discord.com/oauth2/authorize?client_id=1420077800680853716&response_type=code&redirect_uri=https%3A%2F%2Fffny.netlify.app&scope=identify`;
 document.addEventListener('DOMContentLoaded', function() {
     const profileButton = document.getElementById('profile-button');
 profileButton.addEventListener('click', () => {
