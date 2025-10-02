@@ -1,0 +1,15 @@
+[
+  {
+    "name": "My Awesome VRC Group",
+    "description": "This is a curated group added directly from the groups.json file in the GitHub repository. It's a great way to manage content without a database.",
+    "imageUrl": "https://via.placeholder.com/600x300.png?text=My+Group+Banner",
+    "createdAt": "2023-10-27T10:00:00Z"
+  },
+  {
+    "name": "The Lofi Lounge",
+    "description": "A chill place to hang out and listen to lofi beats. All are welcome!",
+    "imageUrl": "https://via.placeholder.com/600x300.png?text=Lofi+Lounge",
+    "createdAt": "2023-10-26T12:30:00Z"
+  }
+]
+
