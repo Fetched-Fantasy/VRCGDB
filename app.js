@@ -10,7 +10,7 @@ function escapeHTML(str) {
 }
 const DATA_URL = 'groups.json';
 const clientId = '1420077800680853716';
-const redirectUri = encodeURIComponent(window.location.origin);
+const redirectUri = encodeURIComponent('https://ffny.netlify.app');
 const scope = 'identify';
 const responseType = 'code';
 const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
