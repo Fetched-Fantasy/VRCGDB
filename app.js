@@ -1,34 +1,42 @@
 // app.js
 const groupList = document.getElementById('group-list');
-const statusDiv = document.getElementById('status'); // Get the status div
+const statusDiv = document.getElementById('status');
+const profileButton = document.getElementById('profile-button');
+const userProfileDiv = document.getElementById('user-profile');
 
-// A simple utility to prevent HTML injection from user input
 function escapeHTML(str) {
     let p = document.createElement('p');
     p.textContent = str;
     return p.innerHTML;
 }
 
-// The path to your data file.
-// If you host this on GitHub, the URL will look like:
-// 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/groups.json'
 const DATA_URL = 'groups.json';
 
+const clientId = '1420077800680853716';
+const redirectUri = encodeURIComponent(window.location.origin);
+const scope = 'identify';
+const responseType = 'code';
+
+const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+
+profileButton.addEventListener('click', () => {
+    window.location.href = discordAuthUrl;
+});
+
 async function loadGroups() {
-    console.log('loadGroups called'); // Add this line
     try {
         const response = await fetch(DATA_URL);
-        const data = await response.json(); // Parse the JSON
-        groupList.innerHTML = ''; // Clear existing content
-        data.forEach(group => { // Iterate directly over the array
-            const groupCard = document.createElement('a'); // Change to <a> tag
-            groupCard.href = group.link; // Set the link
+        const data = await response.json();
+        groupList.innerHTML = '';
+        data.forEach(group => {
+            const groupCard = document.createElement('a');
+            groupCard.href = group.link;
             groupCard.classList.add('group-card');
 
-            const img = document.createElement('img'); // Create the image element
+            const img = document.createElement('img');
             img.src = escapeHTML(group.imageUrl);
             img.alt = escapeHTML(group.name);
-            groupCard.appendChild(img); // Add image first
+            groupCard.appendChild(img);
 
             const h3 = document.createElement('h3');
             h3.textContent = escapeHTML(group.name);
@@ -41,15 +49,57 @@ async function loadGroups() {
             groupList.appendChild(groupCard);
         });
 
-        statusDiv.textContent = ''; // Clear the "Loading groups..." message
-        // OR
-        // statusDiv.style.display = 'none'; // Hide the status div
-
+        statusDiv.textContent = '';
     } catch (error) {
         console.error('Error loading groups:', error);
-        console.error('Error details:', error.message, error.stack); // Log more details
-        statusDiv.textContent = 'Failed to load groups. Please try again later.'; // Update error message
+        console.error('Error details:', error.message, error.stack);
+        statusDiv.textContent = 'Failed to load groups. Please try again later.';
     }
 }
 
-loadGroups(); // Call loadGroups to populate data when the script loads
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+const authorizationCode = getParameterByName('code');
+
+if (authorizationCode) {
+    fetch('/.netlify/functions/discord-profile', {
+        method: 'POST',
+        body: JSON.stringify({ code: authorizationCode }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error('Error fetching Discord profile:', data.error);
+            statusDiv.textContent = 'Error logging in with Discord.';
+        } else {
+            displayUserProfile(data);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching Discord profile:', error);
+        statusDiv.textContent = 'Error logging in with Discord.';
+    });
+}
+
+function displayUserProfile(user) {
+    const avatar = document.createElement('img');
+    avatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+    avatar.alt = 'Discord Avatar';
+
+    const welcomeMessage = document.createElement('span');
+    welcomeMessage.textContent = `Welcome, ${user.username}!`;
+
+    userProfileDiv.appendChild(avatar);
+    userProfileDiv.appendChild(welcomeMessage);
+}
+
+loadGroups();
+

@@ -141,3 +141,10 @@ h1, h2 {
     padding: 5px;
     margin-bottom: 10px;
 }
+
+#user-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover; /* Maintain aspect ratio and cover the circle */
+}
