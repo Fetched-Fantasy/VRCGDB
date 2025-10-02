@@ -1,124 +1,119 @@
-// ==========================
-// Load Groups from groups.json
-// ==========================
+// app.js
+const groupList = document.getElementById('group-list');
+const statusDiv = document.getElementById('status');
+const profileButton = document.getElementById('profile-button');
+const userProfileDiv = document.getElementById('user-profile');
+const logoutButton = document.getElementById('logout-button');
+
+// Helper function to escape HTML
+function escapeHTML(str) {
+    let p = document.createElement('p');
+    p.textContent = str;
+    return p.innerHTML;
+}
+
+const DATA_URL = 'groups.json';
+
+// Initialize the Netlify Identity widget
+const identity = netlifyIdentity;
+identity.init();
+
+// Function to display user profile
+function displayUserProfile(user) {
+    userProfileDiv.innerHTML = '';
+
+    const avatar = document.createElement('img');
+    avatar.src = user.user_metadata.avatar_url || 'default-avatar.png'; // Access avatar from user_metadata
+    avatar.alt = 'Google Avatar';
+    avatar.width = 40;
+    avatar.height = 40;
+    avatar.style.borderRadius = '50%';
+    avatar.style.verticalAlign = 'middle';
+    avatar.style.marginRight = '8px';
+
+    const welcomeMessage = document.createElement('span');
+    welcomeMessage.textContent = `Welcome, ${user.user_metadata.full_name}!`; // Access full name from user_metadata
+
+    userProfileDiv.appendChild(avatar);
+    userProfileDiv.appendChild(welcomeMessage);
+
+    profileButton.style.display = 'none';
+    logoutButton.style.display = 'inline-block';
+}
+
+// Event listener for the login button
+profileButton.addEventListener('click', () => {
+    identity.open();
+  });
+
+// Load groups function
 async function loadGroups() {
   try {
-    const response = await fetch("groups.json");
-    const groups = await response.json();
+        const response = await fetch(DATA_URL);
+        const data = await response.json();
+        groupList.innerHTML = '';
+        data.forEach(group => {
+            const groupCard = document.createElement('a');
+            groupCard.href = group.link;
+            groupCard.target = "_blank"; // Add this line
+            groupCard.classList.add('group-card');
 
-    const groupList = document.getElementById("group-list");
-    groupList.innerHTML = "";
+            const img = document.createElement('img');
+            img.src = escapeHTML(group.imageUrl);
+            img.alt = escapeHTML(group.name);
+            groupCard.appendChild(img);
 
-    groups.forEach(group => {
-      const card = document.createElement("div");
-      card.className = "group-card";
+            const h3 = document.createElement('h3');
+            h3.textContent = escapeHTML(group.name);
+            groupCard.appendChild(h3);
 
-      card.innerHTML = `
-        <h3>${group.name}</h3>
-        <p>${group.description}</p>
-        <a href="${group.link}" target="_blank">Join Group</a>
-      `;
+            const p = document.createElement('p');
+            p.textContent = escapeHTML(group.description);
+            groupCard.appendChild(p);
 
-      groupList.appendChild(card);
-    });
-  } catch (err) {
-    console.error("Error loading groups:", err);
-  }
+            groupList.appendChild(groupCard);
+        });
+
+        statusDiv.textContent = '';
+    } catch (error) {
+        console.error('Error loading groups:', error);
+        console.error('Error details:', error.message, error.stack);
+        statusDiv.textContent = 'Failed to load groups. Please try again later.';
+    }
 }
+
 loadGroups();
 
-// ==========================
-// Discord OAuth2 Login
-// ==========================
-const profileButton = document.getElementById("profile-button");
-const logoutButton = document.getElementById("logout-button"); // add this in index.html
-const userProfileDiv = document.getElementById("user-profile");
-const statusDiv = document.getElementById("status");
-
-// Redirect to Discord OAuth2
-profileButton.addEventListener("click", () => {
-  const clientId = "1420077800680853716"; 
-  const redirectUri = encodeURIComponent("https://ffny.netlify.app");
-  const scope = "identify";
-  const responseType = "code";
-
-  window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+// Example: Call loadGroups AFTER you confirm user is logged in
+netlifyIdentity.on('login', user => {
+  console.log('login', user);
+  displayUserProfile(user);
+  loadGroups();
 });
 
-// ==========================
-// Handle OAuth2 Callback
-// ==========================
-async function handleOAuthCallback() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.has("code")) {
-    const code = params.get("code");
+// Example: Call when user has logged out
+netlifyIdentity.on('logout', () => {
+  console.log('Logged out');
+  profileButton.style.display = 'block';
+  logoutButton.style.display = 'none';
+});
 
-    try {
-      const res = await fetch(`/.netlify/functions/discord-profile?code=${code}`);
-      const user = await res.json();
+// Example: Call when a user has signed up
+netlifyIdentity.on('signup', user => {
+  console.log('signup', user);
+});
 
-      if (user.error) {
-        statusDiv.textContent = "Login failed.";
-        console.error("Discord error:", user);
-        return;
-      }
+// Example: Call when a user has confirmed their account
+netlifyIdentity.on('confirm', user => {
+  console.log('confirmed', user);
+});
 
-      // Save user in localStorage
-      localStorage.setItem("discordUser", JSON.stringify(user));
+// Example: Call when a user is recovered
+netlifyIdentity.on('recovery', user => {
+  console.log('recovery', user);
+});
 
-      displayUserProfile(user);
-    } catch (err) {
-      console.error("Error fetching user profile:", err);
-      statusDiv.textContent = "Error loading profile.";
-    }
-  } else {
-    // Check if user is already stored
-    const storedUser = localStorage.getItem("discordUser");
-    if (storedUser) {
-      displayUserProfile(JSON.parse(storedUser));
-    }
-  }
-}
-handleOAuthCallback();
-
-// ==========================
-// Display User Profile
-// ==========================
-function displayUserProfile(user) {
-  userProfileDiv.innerHTML = "";
-
-  const avatarUrl = user.avatar
-    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
-    : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
-
-  const avatar = document.createElement("img");
-  avatar.src = avatarUrl;
-  avatar.alt = "Discord Avatar";
-  avatar.width = 40;
-  avatar.height = 40;
-  avatar.style.borderRadius = "50%";
-  avatar.style.verticalAlign = "middle";
-  avatar.style.marginRight = "8px";
-
-  const welcomeMessage = document.createElement("span");
-  welcomeMessage.textContent = `Welcome, ${user.username}!`;
-
-  userProfileDiv.appendChild(avatar);
-  userProfileDiv.appendChild(welcomeMessage);
-
-  // Toggle buttons
-  profileButton.style.display = "none";
-  if (logoutButton) logoutButton.style.display = "inline-block";
-}
-
-// ==========================
-// Logout
-// ==========================
-if (logoutButton) {
-  logoutButton.addEventListener("click", () => {
-    localStorage.removeItem("discordUser");
-    userProfileDiv.innerHTML = "";
-    profileButton.style.display = "inline-block";
-    logoutButton.style.display = "none";
-  });
-}
+// Example: Call when the modal is closed
+netlifyIdentity.on('close', () => {
+  console.log('Widget closed');
+});
