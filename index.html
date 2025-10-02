@@ -16,28 +16,31 @@
         <div id="status"><span class="spinner"></span>Loading groups...</div>
         <div id="group-list"></div>
     </div>
-
     <div id="user-profile"></div>
-
     <footer class="footer">
         <p>&copy; 2025 VRChat Group Database</p>
     </footer>
 
 <script>
-    console.log('index.html script running'); // Add this line
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const groupCards = groupList.querySelectorAll('.group-card');
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('index.html script running');
+        const searchInput = document.getElementById('search-input');
+        const groupList = document.getElementById('group-list');
 
-        groupCards.forEach(card => {
-            const name = card.querySelector('h3').textContent.toLowerCase();
-            const description = card.querySelector('p').textContent.toLowerCase();
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const groupCards = groupList.querySelectorAll('.group-card');
 
-            if (name.includes(searchTerm) || description.includes(searchTerm)) {
-                card.style.display = ''; // Show the card
-            } else {
-                card.style.display = 'none'; // Hide the card
-            }
+            groupCards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+
+                if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = ''; // Show the card
+                } else {
+                    card.style.display = 'none'; // Hide the card
+                }
+            });
         });
     });
 </script>
