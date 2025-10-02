@@ -18,7 +18,7 @@ async function loadGroups() {
         const response = await fetch(DATA_URL);
         const data = await response.json(); // Parse the JSON
         groupList.innerHTML = ''; // Clear existing content
-        data.groups.forEach(group => { // Iterate over data.groups
+        data.forEach(group => { // Iterate directly over the array
             const groupCard = document.createElement('div');
             groupCard.classList.add('group-card');
 
