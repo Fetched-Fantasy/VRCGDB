@@ -40,6 +40,7 @@ async function loadGroups() {
 
     } catch (error) {
         console.error('Error loading groups:', error);
+        console.error('Error details:', error.message, error.stack); // Log more details
         groupList.innerHTML = '<p>Failed to load groups. Please try again later.</p>';
     }
 }
