@@ -1,5 +1,6 @@
 // app.js
 const groupList = document.getElementById('group-list');
+const statusDiv = document.getElementById('status'); // Get the status div
 
 // A simple utility to prevent HTML injection from user input
 function escapeHTML(str) {
@@ -20,8 +21,14 @@ async function loadGroups() {
         const data = await response.json(); // Parse the JSON
         groupList.innerHTML = ''; // Clear existing content
         data.forEach(group => { // Iterate directly over the array
-            const groupCard = document.createElement('div');
+            const groupCard = document.createElement('a'); // Change to <a> tag
+            groupCard.href = group.link; // Set the link
             groupCard.classList.add('group-card');
+
+            const img = document.createElement('img'); // Create the image element
+            img.src = escapeHTML(group.imageUrl);
+            img.alt = escapeHTML(group.name);
+            groupCard.appendChild(img); // Add image first
 
             const h3 = document.createElement('h3');
             h3.textContent = escapeHTML(group.name);
@@ -31,18 +38,17 @@ async function loadGroups() {
             p.textContent = escapeHTML(group.description);
             groupCard.appendChild(p);
 
-            const img = document.createElement('img');
-            img.src = escapeHTML(group.imageUrl);
-            img.alt = escapeHTML(group.name);
-            groupCard.appendChild(img);
-
             groupList.appendChild(groupCard);
         });
+
+        statusDiv.textContent = ''; // Clear the "Loading groups..." message
+        // OR
+        // statusDiv.style.display = 'none'; // Hide the status div
 
     } catch (error) {
         console.error('Error loading groups:', error);
         console.error('Error details:', error.message, error.stack); // Log more details
-        groupList.innerHTML = '<p>Failed to load groups. Please try again later.</p>';
+        statusDiv.textContent = 'Failed to load groups. Please try again later.'; // Update error message
     }
 }
 

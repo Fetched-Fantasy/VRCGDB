@@ -1,15 +1,9 @@
 [
   {
-    "name": "My Awesome VRC Group",
-    "description": "This is a curated group added directly from the groups.json file in the GitHub repository. It's a great way to manage content without a database.",
-    "imageUrl": "https://via.placeholder.com/600x300.png?text=My+Group+Banner",
-    "createdAt": "2023-10-27T10:00:00Z"
-  },
-  {
-    "name": "The Lofi Lounge",
-    "description": "A chill place to hang out and listen to lofi beats. All are welcome!",
-    "imageUrl": "https://via.placeholder.com/600x300.png?text=Lofi+Lounge",
-    "createdAt": "2023-10-26T12:30:00Z"
+    "name": "Fetched Fantast",
+    "description": "Fetched Fantasy is a 13+ group that primarily host in furry karaoke but someones hosts in different worlds.",
+    "imageUrl": "https://raw.githubusercontent.com/Fetched-Fantasy/ffny/main/Copilot_20250903_093151.png",
+    "createdAt": "2023-10-27T10:00:00Z",
+    "link": "https://vrchat.com/home/group/grp_e219fa60-9a36-45f2-a5c9-cd848ce0f6ed"
   }
 ]
-
