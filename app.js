@@ -38,7 +38,7 @@ const statusDiv = document.getElementById("status");
 // Redirect to Discord OAuth2
 profileButton.addEventListener("click", () => {
   const clientId = "1420077800680853716"; 
-  const redirectUri = encodeURIComponent("https://ffny.netlify.app/callback");
+  const redirectUri = encodeURIComponent("https://ffny.netlify.app");
   const scope = "identify";
   const responseType = "code";
 
