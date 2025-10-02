@@ -2,15 +2,32 @@
 <html>
 <head>
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to your existing CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Admin Panel</h1>
-        <div id="group-list-admin">
-            <!-- Group data will be displayed here -->
+
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="users">Users</button>
+            <button class="tab-button" data-tab="servers">Servers</button>
+            <button class="tab-button" data-tab="staff">Staff</button>
         </div>
-        <button id="add-group-button">Add New Group</button>
+
+        <div id="users" class="tab-content active">
+            <h2>Users</h2>
+            <!-- User management content here -->
+        </div>
+
+        <div id="servers" class="tab-content">
+            <h2>Servers</h2>
+            <!-- Server management content here -->
+        </div>
+
+        <div id="staff" class="tab-content">
+            <h2>Staff</h2>
+            <!-- Staff management content here -->
+        </div>
     </div>
     <script src="admin.js"></script>
 </body>

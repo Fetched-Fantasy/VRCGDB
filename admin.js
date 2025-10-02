@@ -1,6 +1,23 @@
-// admin.js
-const groupListAdmin = document.getElementById('group-list-admin');
-const addGroupButton = document.getElementById('add-group-button');
+document.addEventListener('DOMContentLoaded', function() { // Wrap in DOMContentLoaded
+
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    // Add click event listeners to the tab buttons
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Deactivate all tab buttons and content areas
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Activate the clicked button and corresponding content area
+            const tabId = this.dataset.tab;
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    const groupListAdmin = document.getElementById('group-list-admin'); // Get admin group list
+    const addGroupButton = document.getElementById('add-group-button'); // Get add group button
 
 fetch('groups.json')
     .then(response => response.json())
@@ -43,5 +60,4 @@ addGroupButton.addEventListener('click', () => {
     // Create new input fields for a new group
     // Append them to groupListAdmin
 });
-
-// Add a function to handle downloading the updated JSON data
+});
