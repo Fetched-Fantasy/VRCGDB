@@ -22,8 +22,11 @@ identity.init();
 function displayUserProfile(user) {
     userProfileDiv.innerHTML = '';
 
-    const avatar = document.createElement('img');
-    avatar.src = user.user_metadata.avatar_url || 'default-avatar.png'; // Access avatar from user_metadata
+  // Create a link element
+  const profileLink = document.createElement('a');
+  profileLink.href = "/settings";
+  const avatar = document.createElement('img');
+  avatar.src = user.user_metadata.avatar_url || 'default-avatar.png';
     avatar.alt = 'Google Avatar';
     avatar.width = 40;
     avatar.height = 40;
@@ -31,11 +34,14 @@ function displayUserProfile(user) {
     avatar.style.verticalAlign = 'middle';
     avatar.style.marginRight = '8px';
 
-    const welcomeMessage = document.createElement('span');
-    welcomeMessage.textContent = `Welcome, ${user.user_metadata.full_name}!`; // Access full name from user_metadata
+  profileLink.appendChild(avatar); //Append the avatar to the link
 
-    userProfileDiv.appendChild(avatar);
-    userProfileDiv.appendChild(welcomeMessage);
+    const welcomeMessage = document.createElement('span');
+  welcomeMessage.textContent = `Welcome, ${user.user_metadata.full_name}!`;
+
+  profileLink.appendChild(welcomeMessage)
+  userProfileDiv.appendChild(profileLink);
+
 
     profileButton.style.display = 'none';
     logoutButton.style.display = 'inline-block';
@@ -117,3 +123,20 @@ netlifyIdentity.on('recovery', user => {
 netlifyIdentity.on('close', () => {
   console.log('Widget closed');
 });
+
+ // Function to update profile picture
+    document.getElementById('upload-profile-picture').addEventListener('click', function() {
+        var imageUrl = document.getElementById('new-profile-picture-url').value;
+        if (imageUrl) {
+            localStorage.setItem('profilePictureURL', imageUrl);
+        }
+    });
+
+ // Check for stored profile picture on page load
+    window.onload = function() {
+        var storedImageUrl = localStorage.getItem('profilePictureURL');
+        if (storedImageUrl) {
+            profileImage.src = storedImageUrl;
+        }
+    };
+
