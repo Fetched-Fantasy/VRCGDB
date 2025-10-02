@@ -89,6 +89,8 @@ h1, h2 {
     border-radius: 8px;
     border: 1px solid #66b3ff;
     transition: transform 0.3s ease;
+    color: #fff; /* Set the text color to white */
+    text-decoration: none; /* Remove the underline */
 }
 
 .group-card:hover {
@@ -119,3 +121,4 @@ h1, h2 {
     width: 100%;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
 }
+
