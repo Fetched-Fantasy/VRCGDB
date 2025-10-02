@@ -1,97 +1,124 @@
-// app.js
-const groupList = document.getElementById('group-list');
-const statusDiv = document.getElementById('status');
-//const profileButton = document.getElementById('profile-button'); // Get the profile button - REMOVE THIS
-const userProfileDiv = document.getElementById('user-profile');
-function escapeHTML(str) {
-    let p = document.createElement('p');
-    p.textContent = str;
-    return p.innerHTML;
-}
-const DATA_URL = 'groups.json';
-const clientId = '1420077800680853716';
-const redirectUri = encodeURIComponent('https://ffny.netlify.app');
-const scope = 'identify';
-const responseType = 'code';
-const discordAuthUrl = `https://discord.com/oauth2/authorize?client_id=1420077800680853716&response_type=code&redirect_uri=https%3A%2F%2Fffny.netlify.app&scope=identify`;
-document.addEventListener('DOMContentLoaded', function() {
-    const profileButton = document.getElementById('profile-button');
-profileButton.addEventListener('click', () => {
-        // Redirect the user to the Discord authentication URL
-    window.location.href = discordAuthUrl;
-    });
-});
+// ==========================
+// Load Groups from groups.json
+// ==========================
 async function loadGroups() {
-    try {
-        const response = await fetch(DATA_URL);
-        const data = await response.json();
-        groupList.innerHTML = '';
-        data.forEach(group => {
-            const groupCard = document.createElement('a');
-            groupCard.href = group.link;
-            groupCard.target = "_blank"; // Add this line
-            groupCard.classList.add('group-card');
+  try {
+    const response = await fetch("groups.json");
+    const groups = await response.json();
 
-            const img = document.createElement('img');
-            img.src = escapeHTML(group.imageUrl);
-            img.alt = escapeHTML(group.name);
-            groupCard.appendChild(img);
+    const groupList = document.getElementById("group-list");
+    groupList.innerHTML = "";
 
-            const h3 = document.createElement('h3');
-            h3.textContent = escapeHTML(group.name);
-            groupCard.appendChild(h3);
+    groups.forEach(group => {
+      const card = document.createElement("div");
+      card.className = "group-card";
 
-            const p = document.createElement('p');
-            p.textContent = escapeHTML(group.description);
-            groupCard.appendChild(p);
+      card.innerHTML = `
+        <h3>${group.name}</h3>
+        <p>${group.description}</p>
+        <a href="${group.link}" target="_blank">Join Group</a>
+      `;
 
-            groupList.appendChild(groupCard);
-        });
-
-        statusDiv.textContent = '';
-    } catch (error) {
-        console.error('Error loading groups:', error);
-        console.error('Error details:', error.message, error.stack);
-        statusDiv.textContent = 'Failed to load groups. Please try again later.';
-    }
-}
-function getParameterByName(name, url = window.location.href) {
-    name = name.replace(/[[\\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
-const authorizationCode = getParameterByName('code');
-if (authorizationCode) {
-    fetch('/.netlify/functions/discord-profile', {
-        method: 'POST',
-        body: JSON.stringify({ code: authorizationCode }),
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            console.error('Error fetching Discord profile:', data.error);
-            statusDiv.textContent = 'Error logging in with Discord.';
-        } else {
-            displayUserProfile(data);
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching Discord profile:', error);
-        statusDiv.textContent = 'Error logging in with Discord.';
+      groupList.appendChild(card);
     });
-}
-function displayUserProfile(user) {
-    const avatar = document.createElement('img');
-    avatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-    avatar.alt = 'Discord Avatar';
-    const welcomeMessage = document.createElement('span');
-    welcomeMessage.textContent = `Welcome, ${user.username}!`;
-    userProfileDiv.appendChild(avatar);
-    userProfileDiv.appendChild(welcomeMessage);
+  } catch (err) {
+    console.error("Error loading groups:", err);
+  }
 }
 loadGroups();
 
+// ==========================
+// Discord OAuth2 Login
+// ==========================
+const profileButton = document.getElementById("profile-button");
+const logoutButton = document.getElementById("logout-button"); // add this in index.html
+const userProfileDiv = document.getElementById("user-profile");
+const statusDiv = document.getElementById("status");
+
+// Redirect to Discord OAuth2
+profileButton.addEventListener("click", () => {
+  const clientId = "1420077800680853716"; 
+  const redirectUri = encodeURIComponent("https://ffny.netlify.app/callback");
+  const scope = "identify";
+  const responseType = "code";
+
+  window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+});
+
+// ==========================
+// Handle OAuth2 Callback
+// ==========================
+async function handleOAuthCallback() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("code")) {
+    const code = params.get("code");
+
+    try {
+      const res = await fetch(`/.netlify/functions/discord-profile?code=${code}`);
+      const user = await res.json();
+
+      if (user.error) {
+        statusDiv.textContent = "Login failed.";
+        console.error("Discord error:", user);
+        return;
+      }
+
+      // Save user in localStorage
+      localStorage.setItem("discordUser", JSON.stringify(user));
+
+      displayUserProfile(user);
+    } catch (err) {
+      console.error("Error fetching user profile:", err);
+      statusDiv.textContent = "Error loading profile.";
+    }
+  } else {
+    // Check if user is already stored
+    const storedUser = localStorage.getItem("discordUser");
+    if (storedUser) {
+      displayUserProfile(JSON.parse(storedUser));
+    }
+  }
+}
+handleOAuthCallback();
+
+// ==========================
+// Display User Profile
+// ==========================
+function displayUserProfile(user) {
+  userProfileDiv.innerHTML = "";
+
+  const avatarUrl = user.avatar
+    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+    : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+
+  const avatar = document.createElement("img");
+  avatar.src = avatarUrl;
+  avatar.alt = "Discord Avatar";
+  avatar.width = 40;
+  avatar.height = 40;
+  avatar.style.borderRadius = "50%";
+  avatar.style.verticalAlign = "middle";
+  avatar.style.marginRight = "8px";
+
+  const welcomeMessage = document.createElement("span");
+  welcomeMessage.textContent = `Welcome, ${user.username}!`;
+
+  userProfileDiv.appendChild(avatar);
+  userProfileDiv.appendChild(welcomeMessage);
+
+  // Toggle buttons
+  profileButton.style.display = "none";
+  if (logoutButton) logoutButton.style.display = "inline-block";
+}
+
+// ==========================
+// Logout
+// ==========================
+if (logoutButton) {
+  logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("discordUser");
+    userProfileDiv.innerHTML = "";
+    profileButton.style.display = "inline-block";
+    logoutButton.style.display = "none";
+  });
+}

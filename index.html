@@ -1,50 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VRChat Group Database</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRChat Group Database</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="header">
-        <h1>VRChat Group Database</h1>
-        <input type="text" id="search-input" placeholder="Search groups..." style="float: right; margin-top: 1rem;">
-    </div>
+  <div class="header">
+    <h1>VRChat Group Database</h1>
+    <input type="text" id="search-input" placeholder="Search groups..." style="float: right; margin-top: 1rem;">
+  </div>
 
-    <div class="container">
-        <div id="status"><span class="spinner"></span>Loading groups...</div>
-        <div id="group-list"></div>
+  <div class="container">
+    <div id="status">
+      <span class="spinner"></span>Loading groups...
     </div>
-    <div id="profile-button"></div>
-    <div id="user-profile"></div>
-    <footer class="footer">
-        <p>&copy; 2025 VRChat Group Database</p>
-    </footer>
+    <div id="group-list"></div>
+  </div>
 
-<script>
+  <!-- Login/Profile Area -->
+  <button id="profile-button">Login with Discord</button>
+  <div id="user-profile"></div>
+  <button id="logout-button" style="display:none;">Logout</button>
+
+  <footer class="footer">
+    <p>&copy; 2025 VRChat Group Database</p>
+  </footer>
+
+  <!-- Search filter script -->
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('index.html script running');
-        const searchInput = document.getElementById('search-input');
-        const groupList = document.getElementById('group-list');
+      const searchInput = document.getElementById('search-input');
+      const groupList = document.getElementById('group-list');
 
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const groupCards = groupList.querySelectorAll('.group-card');
+      searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const groupCards = groupList.querySelectorAll('.group-card');
 
-            groupCards.forEach(card => {
-                const name = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
+        groupCards.forEach(card => {
+          const name = card.querySelector('h3').textContent.toLowerCase();
+          const description = card.querySelector('p').textContent.toLowerCase();
 
-                if (name.includes(searchTerm) || description.includes(searchTerm)) {
-                    card.style.display = ''; // Show the card
-                } else {
-                    card.style.display = 'none'; // Hide the card
-                }
-            });
+          if (name.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
         });
+      });
     });
-</script>
-<script src="app.js"></script>
+  </script>
+
+  <script src="app.js"></script>
 </body>
 </html>
