@@ -14,6 +14,22 @@
 
     <div class="container">
         <div id="status"><span class="spinner"></span>Loading groups...</div>
+        <form name="add-group" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="add-group" />
+            <p>
+                <label>Group Name: <input type="text" name="name" required /></label>
+            </p>
+            <p>
+                <label>Description: <textarea name="description" required></textarea></label>
+            </p>
+            <p>
+                <label>Image URL: <input type="url" name="imageUrl" required /></label>
+            </p>
+            <p>
+                <label>Link: <input type="url" name="link" required /></label>
+            </p>
+            <button type="submit">Add Group</button>
+        </form>
         <div id="group-list"></div>
     </div>
 
