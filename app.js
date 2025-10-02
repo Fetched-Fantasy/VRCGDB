@@ -29,19 +29,25 @@ async function loadGroups() {
         data.forEach(group => {
             const groupCard = document.createElement('a');
             groupCard.href = group.link;
+            groupCard.target = "_blank"; // Add this line
             groupCard.classList.add('group-card');
+
             const img = document.createElement('img');
             img.src = escapeHTML(group.imageUrl);
             img.alt = escapeHTML(group.name);
             groupCard.appendChild(img);
+
             const h3 = document.createElement('h3');
             h3.textContent = escapeHTML(group.name);
             groupCard.appendChild(h3);
+
             const p = document.createElement('p');
             p.textContent = escapeHTML(group.description);
             groupCard.appendChild(p);
+
             groupList.appendChild(groupCard);
         });
+
         statusDiv.textContent = '';
     } catch (error) {
         console.error('Error loading groups:', error);
@@ -88,3 +94,4 @@ function displayUserProfile(user) {
     userProfileDiv.appendChild(welcomeMessage);
 }
 loadGroups();
+
