@@ -14,6 +14,7 @@ function escapeHTML(str) {
 const DATA_URL = 'groups.json';
 
 async function loadGroups() {
+    console.log('loadGroups called'); // Add this line
     try {
         const response = await fetch(DATA_URL);
         const data = await response.json(); // Parse the JSON
