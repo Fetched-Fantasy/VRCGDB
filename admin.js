@@ -61,4 +61,14 @@ addGroupButton.addEventListener('click', () => {
     // Create new input fields for a new group
     // Append them to groupListAdmin
 });
+
+    // Initialize Ably
+    const ably = new Ably.Realtime({key: 'XRHh7Q.qwLKgw:8Zu58gbvPatTpQOVhZ4fBvckDwEsWIWqx1E1NYUqbck'});
+    const channel = ably.channels.get('group-updates');
+
+    channel.subscribe('new-group', function (message) {
+        const newGroup = message.data;
+        // Add the new group to the admin group list
+        displayGroups([newGroup]); // Or refresh the entire list
+    });
 });
