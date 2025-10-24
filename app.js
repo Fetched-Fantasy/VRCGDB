@@ -4,6 +4,7 @@ const statusDiv = document.getElementById('status');
 const profileButton = document.getElementById('profile-button');
 const userProfileDiv = document.getElementById('user-profile');
 const logoutButton = document.getElementById('logout-button');
+const searchInput = document.getElementById('search-input');
 
 // Helper function to escape HTML
 function escapeHTML(str) {
@@ -63,6 +64,7 @@ async function loadGroups() {
             groupCard.href = group.link;
             groupCard.target = "_blank"; // Add this line
             groupCard.classList.add('group-card');
+            groupCard.classList.add('col-md-4');
 
             const img = document.createElement('img');
             img.src = escapeHTML(group.imageUrl);
@@ -135,8 +137,24 @@ netlifyIdentity.on('close', () => {
  // Check for stored profile picture on page load
     window.onload = function() {
         var storedImageUrl = localStorage.getItem('profilePictureURL');
+        const profileImage = document.querySelector('img');
         if (storedImageUrl) {
             profileImage.src = storedImageUrl;
         }
     };
 
+ searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const groupCards = document.querySelectorAll('.group-card');
+
+        groupCards.forEach(card => {
+          const name = card.querySelector('h3').textContent.toLowerCase();
+          const description = card.querySelector('p').textContent.toLowerCase();
+
+          if (name.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });

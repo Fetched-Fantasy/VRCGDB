@@ -30,6 +30,7 @@ function displayGroups(data) {
     data.forEach((group, index) => {
         const groupDiv = document.createElement('div');
         groupDiv.classList.add('group-admin-card');
+        groupDiv.classList.add('col-md-4');
 
         // Create input fields for each property (name, description, image URL, link)
         const nameInput = createInputField('name', group.name);

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VRChat Group Database</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRChat Group Database</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
   <div class="header">
@@ -19,41 +19,42 @@
     <div id="group-list"></div>
   </div>
 
-  <!-- Login/Profile Area -->
-  <button id="profile-button">Login with Discord</button>
-  <div id="user-profile"></div>
-  <button id="logout-button" style="display:none;">Logout</button>
+<!-- Login/Profile Area -->
+<button id="profile-button">Login with Discord</button>
+<div id="user-profile"></div>
+<button id="logout-button" style="display:none;">Logout</button>
 
   <footer class="footer">
     <p>&copy; 2025 VRChat Group Database</p>
   </footer>
 
-  <!-- Search filter script -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('search-input');
-      const groupList = document.getElementById('group-list');
+<form id="new-group-form">
+    <div class="form-group">
+        <label for="group-name">Group Name</label>
+        <input type="text" class="form-control" id="group-name" placeholder="Enter group name">
+    </div>
+    <div class="form-group">
+        <label for="group-description">Group Description</label>
+        <textarea class="form-control" id="group-description" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="group-image-url">Group Image URL</label>
+        <input type="url" class="form-control" id="group-image-url" placeholder="Enter image URL">
+    </div>
+    <div class="form-group">
+        <label for="group-link">Group Link</label>
+        <input type="url" class="form-control" id="group-link" placeholder="Enter group link">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-      searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const groupCards = groupList.querySelectorAll('.group-card');
 
-        groupCards.forEach(card => {
-          const name = card.querySelector('h3').textContent.toLowerCase();
-          const description = card.querySelector('p').textContent.toLowerCase();
-
-          if (name.includes(searchTerm) || description.includes(searchTerm)) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
-  </script>
-
-  <script src="app.js"></script>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="app.js"></script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"
+        integrity="YOUR_SRI_HASH_HERE" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.ably.com/lib/ably.min.js"></script>
 </body>
 </html>
-
