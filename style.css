@@ -1,36 +1,25 @@
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, rgba(74, 85, 230, 0.2) 0%, rgba(0, 13, 26, 0.7) 70%); /* Glowing blue */
-    z-index: -1;
-}
-
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #000d1a; /* Dark blue background */
-    color: #fff; /* Light text color */
+    background-color: #121212; /* Dark gray background */
+    color: #e0e0e0; /* Light text color */
     margin: 0;
     padding: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3Cpattern id=' diagonalHatch' width='10' height='10' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-2.5,2.5 l5,-5 m0,10 l5,-5' stroke='rgba(255,255,255,0.1)' stroke-width='2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%' height='100%' fill='url(%23diagonalHatch)' /%3E%3C/svg%3E"); /* Subtle diagonal lines */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3Cpattern id=' diagonalHatch' width='10' height='10' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-2.5,2.5 l5,-5 m0,10 l5,-5' stroke='rgba(255,255,255,0.05)' stroke-width='2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%' height='100%' fill='url(%23diagonalHatch)' /%3E%3C/svg%3E"); /* Subtle diagonal lines */
 }
 
 .header {
-    background-color: rgba(0, 21, 42, 0.8); /* Darker blue header */
+    background-color: rgba(30, 30, 30, 0.8); /* Darker gray header */
     color: #fff;
     text-align: center;
     padding: 1rem 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(102, 179, 255, 0.3); /* Line under header */
+    border-bottom: 1px solid rgba(102, 179, 255, 0.1); /* Line under header */
 }
 
 .container {
     max-width: 900px;
     margin: 2rem auto;
-    background: rgba(0, 21, 42, 0.5); /* Semi-transparent container */
+    background: rgba(30, 30, 30, 0.5); /* Semi-transparent container */
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Stronger shadow */
@@ -38,8 +27,8 @@ body {
 }
 
 h1, h2 {
-    color: #66b3ff; /* Lighter blue for headings */
-    text-shadow: 0 0 5px #66b3ff; /* Glowing heading text */
+    color: #90caf9; /* Lighter blue for headings */
+    text-shadow: 0 0 5px #90caf9; /* Glowing heading text */
 }
 
 #search-input {
@@ -47,8 +36,8 @@ h1, h2 {
     margin-top: 1rem;
     padding: 0.5rem;
     border-radius: 5px;
-    border: 1px solid #66b3ff;
-    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #90caf9;
+    background-color: rgba(255, 255, 255, 0.05);
     color: #fff;
 }
 
@@ -72,23 +61,23 @@ h1, h2 {
 }
 
 #group-list::-webkit-scrollbar-track {
-    background: #000d1a;
+    background: #212121;
 }
 
 #group-list::-webkit-scrollbar-thumb {
-    background: #66b3ff;
+    background: #90caf9;
     border-radius: 4px;
 }
 
 #group-list::-webkit-scrollbar-thumb:hover {
-    background: #99cfff;
+    background: #bbdefb;
 }
 
 .group-card {
-    background: rgba(0, 34, 68, 0.7); /* Card background */
+    background: rgba(40, 40, 40, 0.7); /* Card background */
     padding: 1.5rem;
     border-radius: 8px;
-    border: 1px solid rgba(102, 179, 255, 0.5); /* Glowing border */
+    border: 1px solid rgba(102, 179, 255, 0.2); /* Glowing border */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
     color: #fff; /* Set the text color to white */
     text-decoration: none; /* Remove the underline */
@@ -96,12 +85,12 @@ h1, h2 {
 
 .group-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(102, 179, 255, 0.7); /* Stronger hover shadow */
+    box-shadow: 0 6px 16px rgba(102, 179, 255, 0.4); /* Stronger hover shadow */
 }
 
 .group-card h3 {
     margin-top: 0;
-    color: #66b3ff;
+    color: #90caf9;
 }
 
 .group-card img {
@@ -109,11 +98,11 @@ h1, h2 {
     height: auto;
     border-radius: 4px;
     margin-top: 1rem;
-    box-shadow: 0 2px 8px rgba(102, 179, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(102, 179, 255, 0.1);
 }
 
 .footer {
-    background-color: rgba(0, 21, 42, 0.8); /* Darker blue footer */
+    background-color: rgba(30, 30, 30, 0.8); /* Darker gray footer */
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -121,18 +110,21 @@ h1, h2 {
     bottom: 0;
     width: 100%;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-    border-top: 1px solid rgba(102, 179, 255, 0.3); /* Line above footer */
+    border-top: 1px solid rgba(102, 179, 255, 0.1); /* Line above footer */
 }
 
 .group-admin-card {
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     padding: 10px;
     margin-bottom: 10px;
+    background-color: #333;
+    border-radius: 5px;
 }
 
 .group-admin-card label {
     display: block;
     margin-bottom: 5px;
+    color: #eee;
 }
 
 .group-admin-card input,
@@ -140,6 +132,10 @@ h1, h2 {
     width: 100%;
     padding: 5px;
     margin-bottom: 10px;
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #777;
+    border-radius: 4px;
 }
 
 #user-profile img {
@@ -175,6 +171,11 @@ h1, h2 {
     cursor: pointer;
     border-radius: 5px 5px 0 0;
     margin-right: 0.2rem;
+    transition: background-color 0.3s ease;
+}
+
+.tab-button:hover {
+    background-color: #66b3ff;
 }
 
 .tab-button.active {
@@ -185,8 +186,9 @@ h1, h2 {
 .tab-content {
     display: none;
     padding: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 0 0 5px 5px;
+    background-color: #222;
 }
 
 .tab-content.active {
